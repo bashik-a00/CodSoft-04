@@ -1,9 +1,10 @@
+import { BrowserRouter,Routes,Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {v4 as uuidv4} from 'uuid';
 import { useState } from "react";
-import products from "../../products";
-import ProductCatalog from "./ProductCatalog";
 import ShoppingCart from "./ShoppingCart";
 import "../style.css";
+import ProductDisplay from './ProductDisplay';
 
 const App = () => {
   const [cartItems,setCartItems]=useState([]);
@@ -13,22 +14,18 @@ const App = () => {
     setCartItems([...cartItems,productWithId]);
   };
   return (
+    
+    <BrowserRouter>
     <div>
-      <ShoppingCart cartItems={cartItems} setCartItems={setCartItems}/>
-      <div className="product-container">
-        {products.map((product) => (
-          <ProductCatalog
-            key={product.id}
-            img={product.image}
-            name={product.name}
-            desc={product.description}
-            onAddToCart={()=>handleAddToCart(product)}
-          />
-        ))}
-      </div>
+      <Link to={'/cart'}>Cart</Link>
+      <Routes>
+        <Route path='/cart' element={<ShoppingCart cartItems={cartItems} setCartItems={setCartItems}/>}></Route>
+        <Route path='/' element={<ProductDisplay handleAddToCart={handleAddToCart}/>}></Route>
+      </Routes>
     </div>
+  </BrowserRouter>
   );
-  
+
 };
 
 export default App;
